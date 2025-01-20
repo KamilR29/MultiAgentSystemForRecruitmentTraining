@@ -8,8 +8,8 @@ This project is a **multi-agent system** designed to assist in the recruitment p
 ## Features
 
 - **Streamlit-based User Interface** for seamless interaction.
-- Modular and scalable architecture.
-- Supports real-time recruitment assistance.
+- Langgraph multi agent system
+
 
 ---
 
@@ -29,8 +29,9 @@ Ensure you have **Python 3.11** installed on your system.
    ```bash
    pip install -r requirements.txt
    ```
-
 2. Run the application:
+- Add **`OPENAI_API_KEY`** in .env
+3. Run the application:
 
    ```bash
    streamlit run main.py
@@ -38,19 +39,6 @@ Ensure you have **Python 3.11** installed on your system.
 
 ---
 
-## Folder Structure
 
-- **`main.py`**: Entry point for the application.
-- **`requirements.txt`**: Lists all required Python packages.
-
----
-
-## Contribution
-
-Feel free to fork the repository and submit pull requests to enhance the system further. 
-
-For questions or feedback, open an issue in this repository.
-
----
 
 **Enjoy seamless recruitment support!**
