@@ -10,6 +10,16 @@ import pandas as pd
 
 
 def importDox(label, key):
+    """
+    Upload and read the contents of a .docx file.
+
+    :param label: Label for the Streamlit file uploader.
+    :type label: str
+    :param key: Unique key for the uploader widget.
+    :type key: str
+    :return: Extracted text content from the uploaded .docx file.
+    :rtype: str
+    """
     uploaded_file = st.file_uploader(label, type=["docx"], key=key)
     document_text = ""
 
@@ -24,7 +34,15 @@ def importDox(label, key):
 
     return document_text
 def app(cv_text,requirements_text):
-    # initialize_state()
+    """
+    Analyze a CV and job requirements using a multi-step graph-based workflow.
+
+    :param cv_text: Text content of the uploaded CV.
+    :type cv_text: str
+    :param requirements_text: Text content of the uploaded job requirements.
+    :type requirements_text: str
+    """
+
     load_dotenv()
 
     class State(TypedDict):
@@ -41,10 +59,15 @@ def app(cv_text,requirements_text):
 
 
     def analise_cv_node(state):
+        """
+        Analyze the CV text and extract technical, soft, and language skills.
+
+        :param state: Current graph state containing user and assistant messages.
+        :type state: dict
+        :return: Updated graph state.
+        :rtype: dict
+        """
         cv_text = state["graph_state"][-2]["content"]
-        # prompt = (
-        #     f"Przeanalizuj to CV pod kątem umiejętności technicznych, miękkich, języków i doświadczenia zawodowego:\n{cv_text} Dodatkowo zwróć ocene umiejętności urzytkownika pod kątem doświadczenia, umiejętności technicznych oraz jezykowych. Jako wynik dziłania zwórć widomość w formacie: [szcegółowe podsumowanie:text ze szczegółowym podsumowaniem umiejętności, ocena umiejętnosći: doświadczenie: numer w skali 1-10, umiejętności tecniczne: numer w skali 1-10, języki: numer w skali 1-10]"
-        # )
         prompt = (
             f"Analyze this CV in terms of technical skills, soft skills, languages, and professional experience:\n"
             f"{cv_text}\n\n"
@@ -66,10 +89,15 @@ def app(cv_text,requirements_text):
         return state
 
     def analise_requirements_node(state):
+        """
+        Analyze the job requirements text and extract key skill and experience expectations.
+
+        :param state: Current graph state.
+        :type state: dict
+        :return: Updated graph state.
+        :rtype: dict
+        """
         requirements_text = state["graph_state"][-2]["content"]
-        # prompt = (
-        #     f"Przeanalizuj wymagania stanowiska pod kątem umiejętności technicznych, miękkich, języków i doświadczenia zawodowego:\n{requirements_text}. Dodatkowo zwróć ocene wymagań pod kątem doświadczenia, umiejętności technicznych oraz jezykowych. Jako wynik dziłania zwórć widomość w formacie: [szcegółowe podsumowanie:text ze szczegółowym podsumowaniem wymagań, ocena wymagań: doświadczenie: numer w skali 1-10, umiejętności tecniczne: numer w skali 1-10, języki: numer w skali 1-10]"
-        # )
         prompt = (
             f"Analyze the job requirements in terms of technical skills, soft skills, languages, "
             f"and professional experience:\n{requirements_text}\n\n"
@@ -92,11 +120,17 @@ def app(cv_text,requirements_text):
         return state
 
     def skills_node(state):
+        """
+        Compare the skills in the CV against the job requirements and visualize the results.
+
+        :param state: Current graph state.
+        :type state: dict
+        :return: Updated graph state.
+        :rtype: dict
+        """
         requirements_text = state["graph_state"][-1]["content"]
         cv_text = state["graph_state"][-2]["content"]
-        # prompt = (
-        #     f"W tych wiadomościach {requirements_text} i {cv_text}, masz sekcje doświadczenie, umiejętności techniczne, jezki jako winik dziłani zwróć mi stringa w formacie linia dla requirements_text liczba z doświadczenia, liczba z umiejętności technicznych, liczba z języków enter linia dla cv_text liczba z doświadczenia, liczba z umiejętności technicznych, liczba z języków przykład porawnego odpowiedzi 1,2,5 enter 4,6,3 i wywaoła narzędzie do konwertowani stringa, zawsze zwracaj tylko liczby nic więcej żadnego tekstu"
-        # )
+
         prompt = (
             f"In these messages: {requirements_text} and {cv_text}, you have sections for "
             f"experience, technical skills, and languages. As a result, return a string in the "
@@ -132,7 +166,14 @@ def app(cv_text,requirements_text):
         return state
 
     def model_cv_node(state):
+        """
+        Generate a model CV tailored to job requirements and user-provided CV content.
 
+        :param state: Current graph state.
+        :type state: dict
+        :return: Updated graph state.
+        :rtype: dict
+        """
         user_message = state["graph_state"][-2]["content"]
         cv = state["graph_state"][0]["content"]
         prompt = (
@@ -154,7 +195,7 @@ def app(cv_text,requirements_text):
 
         return state
 
-
+    # Build the workflow graph
     builder = StateGraph(State)
     builder.add_node("analise_cv_node", analise_cv_node)
     builder.add_node("analise_requirements_node", analise_requirements_node)
@@ -177,6 +218,12 @@ def app(cv_text,requirements_text):
 
 
 def show():
+    """
+    Display the Streamlit UI to upload a CV and job requirements and perform their analysis.
+
+    This function creates a two-column layout where the user can upload the CV and the job
+    requirements. When the "Analyze" button is pressed, the uploaded files are processed.
+    """
     st.title("Analyze CV")
     with st.container():
         col1, col2 = st.columns(2)

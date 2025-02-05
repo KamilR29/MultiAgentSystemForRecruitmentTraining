@@ -1,4 +1,3 @@
-import openai
 import streamlit as st
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -6,9 +5,25 @@ import time
 
 
 def show():
+    """
+    Display a Streamlit application with a progress bar and LLM interaction.
+
+    This function performs the following steps:
+
+    1. Loads environment variables using :func:`load_dotenv`.
+    2. Sets the page title to "Hello" using :func:`st.title`.
+    3. Initializes the language model via :class:`ChatOpenAI` with the ``gpt-4o`` model.
+    4. Creates and updates a progress bar that simulates a long-running operation.
+    5. At 50% progress, sends a recruitment-related prompt to the language model.
+    6. At 99% progress, displays the LLM's response as a chat message using :func:`st.chat_message`.
+    7. Finally, clears the progress bar.
+
+    Raises
+    ------
+    Exception
+        Any exception raised during the invocation of the language model or Streamlit operations.
+    """
     load_dotenv()
-
-
     st.title("Hello")
     llm = ChatOpenAI(model="gpt-4o")
 
