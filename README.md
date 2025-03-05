@@ -180,6 +180,16 @@ Ensure you have **Python 3.11** installed on your system.
    ```
 
 ---
+## Home page
+![image](https://github.com/user-attachments/assets/3401654d-a3c6-4d58-ba89-bbdee670f773)
+
+---
+##  Analyze CV page
+![image](https://github.com/user-attachments/assets/dfb74f05-fbe2-433f-9faf-d7f672078a35)
+
+---
+##Technical Review page
+![image](https://github.com/user-attachments/assets/5c76dece-d59f-4a0b-9cd4-7afac4f6bb6a)
 
 
 
